@@ -1,0 +1,539 @@
+/* ==========================================
+   GLOBAL
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Tahoma,sans-serif;
+}
+
+.hidden{
+    display:none !important;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* ==========================================
+   BOOT SCREEN
+========================================== */
+
+#bootScreen{
+    position:fixed;
+    inset:0;
+    background:black;
+    color:#00ff66;
+    font-family:Consolas,monospace;
+    padding:30px;
+    z-index:999999;
+}
+
+#biosLogo{
+    color:white;
+    font-size:28px;
+    margin-bottom:30px;
+}
+
+#bootText{
+    white-space:pre-wrap;
+    font-size:15px;
+    line-height:1.4;
+}
+
+/* ==========================================
+   DESKTOP
+========================================== */
+
+#desktop{
+    width:100vw;
+    height:100vh;
+
+    background:
+    url("https://images2.alphacoders.com/941/thumb-1920-941898.jpg");
+
+    background-size:cover;
+    background-position:center;
+
+    position:relative;
+}
+
+/* ==========================================
+   DESKTOP ICONS
+========================================== */
+
+.desktop-icon{
+    position:absolute;
+
+    width:80px;
+
+    text-align:center;
+
+    color:white;
+
+    cursor:pointer;
+
+    user-select:none;
+}
+
+.desktop-icon:hover{
+
+    background:rgba(50,100,255,.25);
+
+    border:1px solid rgba(255,255,255,.3);
+}
+
+.icon-img img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.desktop-icon span{
+    display:block;
+
+    margin-top:4px;
+
+    font-size:12px;
+
+    text-shadow:
+    1px 1px 2px black;
+}
+
+/* ==========================================
+   WINDOWS XP WINDOW
+========================================== */
+
+.window{
+
+    position:absolute;
+
+    top:120px;
+    left:220px;
+
+    width:450px;
+
+    background:#ece9d8;
+
+    border:1px solid #003c74;
+
+    box-shadow:
+    0 0 10px rgba(0,0,0,.4);
+
+    z-index:20;
+    
+}
+
+.window.active{
+    z-index:999;
+}
+
+.titlebar{
+
+    height:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 6px;
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    cursor:move;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #0058ee,
+        #3b8cff
+    );
+}
+
+.window-buttons{
+    display:flex;
+    gap:3px;
+}
+
+.close-btn{
+
+    width:22px;
+    height:22px;
+
+    border:1px solid #fff;
+
+    background:#ff4444;
+
+    color:white;
+
+    font-weight:bold;
+}
+
+.close-btn:hover{
+    background:#ff0000;
+}
+
+.window-content{
+
+    padding:12px;
+
+    color:black;
+
+    max-height:550px;
+
+    overflow:auto;
+}
+
+.window-content h2,
+.window-content h3{
+    margin-bottom:10px;
+}
+
+.window-content p{
+    margin-top:10px;
+}
+
+.window-content input{
+
+    width:100%;
+
+    margin-top:5px;
+
+    padding:8px;
+
+    border:1px solid #999;
+}
+
+.window-content button{
+
+    margin-top:10px;
+
+    padding:8px 12px;
+
+    border:1px solid #888;
+
+    background:#ece9d8;
+}
+
+.window-content button:hover{
+    background:#d6d6d6;
+}
+
+/* ==========================================
+   RSVP
+========================================== */
+
+#foodList{
+    margin-top:15px;
+}
+
+#foodList li{
+    margin-bottom:5px;
+}
+
+/* ==========================================
+   AIM
+========================================== */
+
+#chatMessages{
+
+    height:240px;
+
+    overflow-y:auto;
+
+    border:1px solid #999;
+
+    background:white;
+
+    padding:10px;
+
+    margin-bottom:10px;
+}
+#chatMessages{
+
+    height:250px;
+
+    overflow-y:auto;
+
+    background:white;
+
+    border:1px solid #999;
+
+    padding:10px;
+
+    color:black;
+
+    margin-bottom:10px;
+}
+
+.chat-entry{
+
+    margin-bottom:8px;
+
+    padding-bottom:4px;
+
+    border-bottom:1px solid #ddd;
+}
+.chat-entry{
+    margin-bottom:6px;
+    word-wrap:break-word;
+}
+
+/* ==========================================
+   DOOM
+========================================== */
+
+.doom-window{
+
+    width:900px;
+    height:700px;
+}
+
+#doomContainer{
+    width:100%;
+}
+
+#dos{
+
+    width:100%;
+    height:600px;
+
+    background:black;
+}
+
+/* ==========================================
+   START MENU
+========================================== */
+
+#startMenu{
+
+    position:absolute;
+
+    bottom:40px;
+    left:0;
+
+    width:240px;
+
+    background:#ece9d8;
+
+    border:2px solid #245edb;
+
+    z-index:10000;
+}
+
+.start-header{
+
+    background:
+    linear-gradient(
+        to right,
+        #003399,
+        #3388ff
+    );
+
+    color:white;
+
+    padding:10px;
+
+    font-weight:bold;
+}
+
+.start-item{
+
+    padding:10px;
+
+    cursor:pointer;
+
+    color:black;
+}
+
+.start-item:hover{
+
+    background:#316ac5;
+
+    color:white;
+}
+
+/* ==========================================
+   TASKBAR
+========================================== */
+
+#taskbar{
+
+      position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:40px;
+
+    background:linear-gradient(to bottom,#245edb,#1941a5);
+
+    display:flex;
+    align-items:center;
+
+    z-index:999999;
+}
+
+#startButton{
+
+    height:100%;
+
+    min-width:90px;
+
+    border:none;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #3cb043,
+        #2a7f2f
+    );
+}
+
+#startButton:hover{
+    filter:brightness(1.1);
+}
+
+#taskButtons{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:4px;
+
+    padding:0 6px;
+}
+
+.task-btn{
+
+    height:28px;
+
+    padding:0 12px;
+
+    border:none;
+
+    color:white;
+
+    background:#4a78c9;
+
+    cursor:pointer;
+}
+
+.task-btn:hover{
+    background:#5b8de5;
+}
+
+#clock{
+
+    width:90px;
+
+    color:white;
+
+    text-align:center;
+
+    font-size:13px;
+}
+
+/* ==========================================
+   XP ERROR POPUPS
+========================================== */
+
+.xp-error {
+    position: absolute;
+    width: 260px;
+    background: #ece9d8;
+    border: 1px solid #003c74;
+    box-shadow: 3px 3px 10px rgba(0,0,0,.5);
+    z-index: 999999;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+.xp-error-title {
+    background: linear-gradient(to bottom, #0058ee, #3b8cff);
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.xp-error-body {
+    padding: 12px;
+}
+/* ==========================================
+   SCAN STATUS
+========================================== */
+
+#scanStatus{
+    font-weight:bold;
+    color:#005500;
+}
+
+/* ==========================================
+   SCROLLBAR (XP-ish)
+========================================== */
+
+::-webkit-scrollbar{
+    width:12px;
+}
+
+::-webkit-scrollbar-track{
+    background:#d4d0c8;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#9a9a9a;
+    border:1px solid #777;
+}
+
+.xp-error {
+    position: absolute;
+    width: 260px;
+    background: #ece9d8;
+    border: 1px solid #003c74;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+    z-index: 99999;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+.xp-error-title {
+    background: linear-gradient(to bottom, #0058ee, #3b8cff);
+    color: white;
+    padding: 4px 6px;
+    font-weight: bold;
+}
+
+.xp-error-body {
+    padding: 10px;
+}
+
+.xp-error-body button {
+    margin-top: 10px;
+    padding: 3px 10px;
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PartyOS XP</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Keep for later DOOM integration -->
+
+<script src="https://js-dos.com/6.22/current/js-dos.js"></script>
+
+</head>
+<body>
+
+<!-- AUDIO -->
+
+<audio id="startupSound" preload="auto">
+    <source src="assets/boot.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="clickSound" preload="auto">
+    <source src="assets/click.wav" type="audio/wav">
+</audio>
+
+<audio id="errorSound" preload="auto">
+    <source src="assets/error.wav" type="audio/wav">
+</audio>
+
+<!-- BOOT SCREEN -->
+
+<div id="bootScreen">
+    <div id="biosLogo">
+        PartyOS BIOS v1.0
+    </div>
+
+<pre id="bootText">Click anywhere to boot PartyOS...</pre>
+
+</div>
+
+<!-- DESKTOP -->
+
+<div id="desktop" class="hidden">
+
+<!-- MESSAGE BOARD -->
+<div class="desktop-icon" id="messageBoardIcon" style="top:30px; left:30px;">
+    <div class="icon-img">
+        <img
+            src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Farm-Fresh_aol_messenger.png"
+            alt="AIM Icon">
+    </div>
+    <span>Message Board</span>
+</div>
+
+<!-- DOOM -->
+<div class="desktop-icon" style="top:140px; left:30px;">
+    <div class="icon-img">
+        <img
+            src="https://cdn2.steamgriddb.com/icon_thumb/8e68c3c7bf14ad0bcaba52babfa470bd.png"
+            alt="DOOM">
+    </div>
+    <span>DOOM</span>
+</div>
+
+<!-- VIRUS SCAN -->
+<div class="desktop-icon" style="top:250px; left:30px;">
+    <div class="icon-img">
+        <img
+            src="https://pbs.twimg.com/media/FGMepMTVEAQd7Nk.png"
+            alt="Virus Scan">
+    </div>
+    <span>Virus Scan</span>
+</div>
+
+<!-- CHAOS MODE -->
+<div class="desktop-icon" id="chaosIcon" style="top:360px; left:30px;">
+    <div class="icon-img">
+        <img
+            src="https://static.wikia.nocookie.net/the-microsoft-windows-xp/images/9/95/Sample_Error_Message.png"
+            alt="Chaos Mode">
+    </div>
+    <span>Chaos Mode</span>
+</div>
+
+<!-- AIM MESSAGE BOARD WINDOW -->
+<div id="aimWindow" class="window hidden">
+
+    <div class="titlebar">
+        <span>AIM Message Board</span>
+
+        <div class="window-buttons">
+            <button id="closeAim" class="close-btn">X</button>
+        </div>
+    </div>
+
+    <div class="window-content">
+
+        <h2>🌿 Garden Gathering</h2>
+
+        <p>
+            July 22 • 7:00 PM
+        </p>
+
+        <p>
+            Claim a food item below.
+        </p>
+
+        <div id="chatMessages"></div>
+
+        <input
+            id="guestName"
+            type="text"
+            placeholder="Screen Name">
+
+        <input
+            id="foodInput"
+            type="text"
+            placeholder="What are you bringing?">
+
+        <button id="sendChat">
+            Send
+        </button>
+
+    </div>
+
+</div>
+
+<!-- START MENU (KEEP FOR LATER) -->
+<div id="startMenu" class="hidden">
+
+    <div class="start-header">
+        PartyOS XP
+    </div>
+
+    <div class="start-item">
+        AIM Messenger
+    </div>
+
+    <div class="start-item">
+        DOOM
+    </div>
+
+    <div class="start-item">
+        Virus Scanner
+    </div>
+
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+
+    <button id="startButton">
+        Start
+    </button>
+
+    <div id="taskButtons"></div>
+
+    <div id="clock"></div>
+
+</div>
+
+</div>
+
+<script src="script.js?v=1" defer></script>
+
+</body>
+</html>
+<div class="desktop-icon" id="chaosIcon" style="top:360px; left:30px;">
+    <div class="icon-img">
+        <img src="https://static.wikia.nocookie.net/the-microsoft-windows-xp/images/9/95/Sample_Error_Message.png">
+    </div>
+    <span>Chaos Mode</span>
+</div>
