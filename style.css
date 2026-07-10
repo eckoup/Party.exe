@@ -49,6 +49,15 @@ button{
     font-size:15px;
     line-height:1.4;
 }
+#bootText::after {
+    content: "█";
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
 
 /* ==========================================
    DESKTOP

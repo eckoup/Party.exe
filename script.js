@@ -1,84 +1,123 @@
+/* =========================
+   SUPABASE CONFIG
+========================= */
+
+const SUPABASE_URL = "https://omwycrliuclddnazrqjh.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Ee5552Z9valzNcLO04d-hg_H0xe3iQp";
+
+let db = null;
+
+function initSupabase() {
+    if (!window.supabase) {
+        console.warn("Supabase library not loaded.");
+        return;
+    }
+
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log("Supabase ready");
+}
 
 /* =========================
-   AUDIO
+   ELEMENTS
 ========================= */
 
 const startupSound = document.getElementById("startupSound");
 const clickSound = document.getElementById("clickSound");
 const errorSound = document.getElementById("errorSound");
 
-/* =========================
-   BOOT SEQUENCE
-========================= */
-
 const bootScreen = document.getElementById("bootScreen");
 const desktop = document.getElementById("desktop");
 const bootText = document.getElementById("bootText");
+
+const messageBoardIcon = document.getElementById("messageBoardIcon");
+const aimWindow = document.getElementById("aimWindow");
+const closeAim = document.getElementById("closeAim");
+
+const chatMessages = document.getElementById("chatMessages");
+const guestName = document.getElementById("guestName");
+const foodInput = document.getElementById("foodInput");
+const sendChat = document.getElementById("sendChat");
+
+const clock = document.getElementById("clock");
+
+/* =========================
+   AUDIO HELPERS
+========================= */
+
+function playBootSound() {
+    if (!startupSound) {
+        console.warn("startupSound element not found.");
+        return;
+    }
+
+    startupSound.volume = 1;
+    startupSound.currentTime = 0;
+
+    startupSound.play()
+        .then(() => {
+            console.log("Boot sound playing");
+        })
+        .catch((err) => {
+            console.warn("Boot sound failed:", err);
+        });
+}
+
+/* =========================
+   BOOT SYSTEM
+========================= */
 
 let booted = false;
 
 document.addEventListener("click", startBoot, { once: true });
 
 function startBoot() {
-
     if (booted) return;
     booted = true;
 
-    startupSound.play().catch(() => {});
+    playBootSound();
 
-    bootText.textContent =
-`PartyOS BIOS v1.0
+    const lines = [
+        "PartyOS BIOS v07.22.2026",
+        "",
+        "Memory Test: 67536K OK",
+        "Detecting Primary Master... BESTBUY_DISK",
+        "Detecting Secondary Master... AIM_PROTOCOL",
+        "",
+        "Loading AIM Messages...",
+        "Loading Party Service...",
+        "Initiating Potluck Protocol...",
+        "Checking Karaoke Drivers... OK",
+        "Checking Halo LAN Adapter... OK",
+        "Mounting Snack Registry... OK",
+        "",
+        "Boot complete ✔"
+    ];
 
-Loading AIM Messenger...
-Loading Party Services...
-Loading Potluck Protocol...
-Boot complete ✔`;
+    bootText.textContent = "";
 
-    setTimeout(() => {
+    let index = 0;
 
-        bootScreen.classList.add("hidden");
-        desktop.classList.remove("hidden");
+    const bootInterval = setInterval(() => {
+        bootText.textContent += lines[index] + "\n";
+        index++;
 
-    }, 1400);
+        if (index >= lines.length) {
+            clearInterval(bootInterval);
+
+            setTimeout(() => {
+                bootScreen.classList.add("hidden");
+                desktop.classList.remove("hidden");
+                initSupabase();
+            }, 700);
+        }
+    }, 180);
 }
-
-/* =========================
-   AIM WINDOW
-========================= */
-
-const messageBoardIcon =
-document.getElementById("messageBoardIcon");
-
-const aimWindow =
-document.getElementById("aimWindow");
-
-const closeAim =
-document.getElementById("closeAim");
-
-const chatMessages =
-document.getElementById("chatMessages");
-
-const guestName =
-document.getElementById("guestName");
-
-const foodInput =
-document.getElementById("foodInput");
-
-const sendChat =
-document.getElementById("sendChat");
-
-/* =========================
-   CLAIM SYSTEM
-========================= */
-
-const claimedFoods = new Set();
 
 /* =========================
    AIM LANDING MESSAGE
 ========================= */
 
 function loadAIMIntro() {
-
     chatMessages.innerHTML = `
         <div class="chat-entry">
             <strong>chicrevolt:</strong>
@@ -100,187 +139,115 @@ function loadAIMIntro() {
 }
 
 /* =========================
-   OPEN / CLOSE WINDOW
+   OPEN / CLOSE AIM WINDOW
 ========================= */
 
-messageBoardIcon.addEventListener("click", () => {
-
-    clickSound.play().catch(() => {});
-
+messageBoardIcon?.addEventListener("click", () => {
+    clickSound?.play().catch(() => {});
     aimWindow.classList.remove("hidden");
-
     loadAIMIntro();
-
 });
 
-closeAim.addEventListener("click", () => {
-
+closeAim?.addEventListener("click", () => {
     aimWindow.classList.add("hidden");
-
 });
 
 /* =========================
    CHAT SYSTEM
 ========================= */
 
-sendChat.addEventListener("click", () => {
-
-    const name =
-    guestName.value.trim();
-
-    const food =
-    foodInput.value.trim();
+sendChat?.addEventListener("click", async () => {
+    const name = guestName.value.trim();
+    const food = foodInput.value.trim();
 
     if (!name || !food) {
-
-        errorSound.play().catch(() => {});
+        errorSound?.play().catch(() => {});
         return;
     }
 
-    /* Guest message */
-
-    const guestMsg =
-    document.createElement("div");
-
-    guestMsg.className =
-    "chat-entry";
-
-    guestMsg.innerHTML =
-    `<strong>${name}:</strong>
-    im bringing ${food}`;
-
+    const guestMsg = document.createElement("div");
+    guestMsg.className = "chat-entry";
+    guestMsg.innerHTML = `<strong>${name}:</strong> im bringing ${food}`;
     chatMessages.appendChild(guestMsg);
 
-    const normalized =
-    food.toLowerCase();
+    if (!db) {
+        const failMsg = document.createElement("div");
+        failMsg.className = "chat-entry";
+        failMsg.innerHTML = `<strong>chicrevolt:</strong> database isn't ready yet 😭 try again in a sec`;
+        chatMessages.appendChild(failMsg);
+        return;
+    }
 
-    /* chicrevolt response */
+    const { data, error } = await db
+        .from("food_claims")
+        .insert({
+            guest_name: name,
+            food_item: food
+        })
+        .select();
 
-    const reply =
-    document.createElement("div");
+    const reply = document.createElement("div");
+    reply.className = "chat-entry";
 
-    reply.className =
-    "chat-entry";
+    if (error) {
+        errorSound?.play().catch(() => {});
 
-    setTimeout(() => {
-
-        if (claimedFoods.has(normalized)) {
-
-            errorSound.play().catch(() => {});
-
-            reply.innerHTML =
+        reply.innerHTML =
             `<strong>chicrevolt:</strong>
             nooo 😭 ${food} is already taken
             can u pick something else?`;
 
-        } else {
-
-            claimedFoods.add(normalized);
-
-            reply.innerHTML =
+        console.error("Supabase insert error:", error);
+    } else {
+        reply.innerHTML =
             `<strong>chicrevolt:</strong>
             yesss ${food} is PERFECT 😍
             added u to the list ✔`;
 
-        }
+        console.log("Inserted:", data);
+    }
 
-        chatMessages.appendChild(reply);
-
-        chatMessages.scrollTop =
-        chatMessages.scrollHeight;
-
-    }, 500);
+    chatMessages.appendChild(reply);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     guestName.value = "";
     foodInput.value = "";
-
 });
 
 /* =========================
-   CLOCK (optional but nice)
+   CLOCK
 ========================= */
 
-const clock =
-document.getElementById("clock");
-
 function updateClock() {
-
     if (!clock) return;
 
-    const now = new Date();
-
-    clock.textContent =
-    now.toLocaleTimeString([], {
+    clock.textContent = new Date().toLocaleTimeString([], {
         hour: "numeric",
         minute: "2-digit"
     });
-
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
-
 /* =========================
-   CHAOS MODE (SAFE SIMULATION)
+   MANUAL SUPABASE TEST
 ========================= */
 
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const chaosIcon =
-    document.getElementById("chaosIcon");
-
-    if (!chaosIcon) {
-        console.error("Chaos icon not found");
+window.testSupabaseInsert = async function () {
+    if (!db) {
+        console.warn("Supabase not initialized yet.");
         return;
     }
 
-    const messages = [
-        "ERROR 0x80070005: Access denied (to vibes)",
-        "AIM service unexpectedly nostalgic",
-        "System32 is thinking about quitting",
-        "Memory leak detected in PartyOS.exe",
-        "Guest list corrupted",
-        "Unknown process: snack.exe running",
-        "Kernel panic (emotion subsystem failed)"
-    ];
+    const { data, error } = await db
+        .from("food_claims")
+        .insert({
+            guest_name: "Alex",
+            food_item: "Pizza"
+        })
+        .select();
 
-    function spawnError() {
-
-        const popup = document.createElement("div");
-        popup.className = "xp-error";
-
-        popup.style.top =
-        Math.random() * (window.innerHeight - 150) + "px";
-
-        popup.style.left =
-        Math.random() * (window.innerWidth - 260) + "px";
-
-        popup.innerHTML = `
-            <div class="xp-error-title">
-                PartyOS Error
-            </div>
-
-            <div class="xp-error-body">
-                ${messages[Math.floor(Math.random() * messages.length)]}
-                <br><br>
-
-                <button onclick="this.parentElement.parentElement.remove()">
-                    OK
-                </button>
-            </div>
-        `;
-
-        document.body.appendChild(popup);
-    }
-
-    chaosIcon.addEventListener("click", () => {
-
-        console.log("Chaos clicked");
-
-        spawnError(); // ONLY ONE POPUP PER CLICK
-
-    });
-
-});
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+};
