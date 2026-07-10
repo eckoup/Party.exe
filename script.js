@@ -8,14 +8,27 @@ const SUPABASE_KEY = "sb_publishable_Ee5552Z9valzNcLO04d-hg_H0xe3iQp";
 let db = null;
 
 function initSupabase() {
-    if (!window.supabase) {
-        console.warn("Supabase library not loaded.");
-        return;
+    if (db) {
+        return db;
     }
 
-    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (!window.supabase) {
+        console.error("Supabase library was not loaded.");
+        return null;
+    }
+
+    db = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
     console.log("Supabase ready");
+
+    return db;
 }
+
+/* Initialize immediately */
+initSupabase();
 
 /* =========================
    ELEMENTS
@@ -107,7 +120,6 @@ function startBoot() {
             setTimeout(() => {
                 bootScreen.classList.add("hidden");
                 desktop.classList.remove("hidden");
-                initSupabase();
             }, 700);
         }
     }, 180);
@@ -173,8 +185,10 @@ sendChat?.addEventListener("click", async () => {
     if (!db) {
         const failMsg = document.createElement("div");
         failMsg.className = "chat-entry";
-        failMsg.innerHTML = `<strong>chicrevolt:</strong> database isn't ready yet 😭 try again in a sec`;
+        failMsg.innerHTML = `<strong>chicrevolt:</strong> party database isn't ready yet 😭 plz text Emrys and try again in a sec *furious typing sounds*`;
         chatMessages.appendChild(failMsg);
+            console.error("Supabase client is unavailable.");
+
         return;
     }
 
